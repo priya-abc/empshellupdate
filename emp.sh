@@ -1,37 +1,36 @@
 ####WELCOME###
 echo "Employee shell program added"
 #!/bin/bash
-Rate=20
-Fulltime=8
-Halftime=4
-total_wage=0
-for (( i=1; i<=30; i++ ))
+IS_FULL_TIME=1
+IS_PART_TIME=2;
+MAX_HRS_IN_MONTH=4;
+EMP_RATE_PER_HR=20;
+NUM_WORKING_DAYS=20;
+
+totalempHr=0;
+totalworkingdays=20;
+
+case $empCheck in
+      $IS_FULL_TIME)
+         empHrs=8
+         ;;
+      $IS_PART_TIME)
+         empHrs=4
+         ;;
+       *)
+         empHrs=0
+         ;;
+esac
+   echo $empHrs
+}
+while [[ $totalEmpHrs -lt $MAX_HRS_IN_MONTH &&
+         $totalWorkingDays -lt $NUM_WORKING_DAYS ]]
 do
-        n=$((RANDOM%2))
-        attendance[$i]=$n
-        if [ ${attendance[$i]} -eq 0 ]
-        then
-                attendance[$i]="Absent"
-                partime[$i]=0
-        elif [ ${attendance[$i]} -eq 1 ]
-        then
-                attendance[$i]="Present"
-                partime[$i]=$((RANDOM%2+2))
-        fi
+   ((totalWorkingDays++))
+   empCheck=$((RANDOM%3));
+   empHrs="$( getWorkHrs $empCheck )"
+   totalEmpHrs=$(($totalEmpHrs+$empHrs)
+day="Day"
+   dailyWage[$totalWorkingDays]="$( getEmpwage $empHrs )"
 done
-echo -e "Day No.\t DailyWage \t TotalWage"
-for (( i=1; i<=30; i++))
-do
-        if [[ ${attendance[$i]} = "Present" ]]
-        then
-if [ ${partime[$i]} -eq 2 ]
-                then
-                        wage[$i]=`expr $Rate \* $Halftime`
-                else
-                        wage[$i]=`expr $Rate \* $Fulltime`
-                fi
-        else
-                wage[$i]=0
-fi
-                total_wage=`expr $total_wage + ${wage[$i]}`
-done
+totalSalary=$(( $totalEmpHrs \* $EMP_RATE_PER_HR ));
